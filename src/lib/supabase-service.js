@@ -42,8 +42,7 @@ export const coupleProfileService = {
     await ensureAuth();
     const { data, error } = await supabase
       .from('profiles')
-      .update(updates)
-      .eq('id', id)
+      .upsert({ id, ...updates })
       .select()
       .single();
     
