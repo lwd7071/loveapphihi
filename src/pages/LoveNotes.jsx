@@ -9,12 +9,10 @@ import { Input } from '@/components/ui/input';
 import { format } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import { loveNoteService } from '@/lib/supabase-service';
-import { useAuth } from '@/lib/AuthContext';
 
 const stickers = ['💌', '🥰', '💕', '🌹', '🫶', '✨', '🦋', '🍓', '🌙', '⭐'];
 
 export default function LoveNotes() {
-  const { user } = useAuth();
   const [message, setMessage] = useState('');
   const [fromName, setFromName] = useState('');
   const [toName, setToName] = useState('');
@@ -24,19 +22,16 @@ export default function LoveNotes() {
   const { data: notes = [] } = useQuery({
     queryKey: ['love-notes'],
     queryFn: () => loveNoteService.list(),
-    enabled: !!user
   });
 
   // Realtime subscription
   useEffect(() => {
-    if (!user) return;
-    
     const unsubscribe = loveNoteService.subscribe(() => {
       queryClient.invalidateQueries({ queryKey: ['love-notes'] });
     });
     
     return unsubscribe;
-  }, [queryClient, user]);
+  }, [queryClient]);
 
   const sendMutation = useMutation({
     mutationFn: (data) => loveNoteService.create(data),

@@ -10,7 +10,6 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import MemoryDetailModal from '@/components/memories/MemoryDetailModal';
 import { memoryService, uploadPhoto } from '@/lib/supabase-service';
-import { useAuth } from '@/lib/AuthContext';
 
 const categoryLabel = {
   first_time: { label: 'Lần đầu', emoji: '🌟', color: 'bg-yellow-100 text-yellow-600' },
@@ -21,7 +20,6 @@ const categoryLabel = {
 };
 
 export default function Memories() {
-  const { user } = useAuth();
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ 
     title: '', 
@@ -37,7 +35,6 @@ export default function Memories() {
   const { data: memories = [] } = useQuery({
     queryKey: ['memories'],
     queryFn: () => memoryService.list(),
-    enabled: !!user
   });
 
   const createMutation = useMutation({

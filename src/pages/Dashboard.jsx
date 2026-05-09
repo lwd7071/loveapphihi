@@ -8,27 +8,20 @@ import RecentDiary from '@/components/dashboard/RecentDiary';
 import LatestNote from '@/components/dashboard/LatestNote';
 import { motion } from 'framer-motion';
 import { coupleProfileService, diaryEntryService, loveNoteService } from '@/lib/supabase-service';
-import { useAuth } from '@/lib/AuthContext';
-
 export default function Dashboard() {
-  const { user } = useAuth();
-
   const { data: profiles = [] } = useQuery({
     queryKey: ['couple-profile'],
     queryFn: () => coupleProfileService.list(),
-    enabled: !!user
   });
 
   const { data: diaryEntries = [] } = useQuery({
     queryKey: ['diary-entries'],
     queryFn: () => diaryEntryService.list(5),
-    enabled: !!user
   });
 
   const { data: loveNotes = [] } = useQuery({
     queryKey: ['love-notes'],
     queryFn: () => loveNoteService.list(1),
-    enabled: !!user
   });
 
   const profile = profiles[0];

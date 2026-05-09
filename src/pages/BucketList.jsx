@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { bucketListService } from '@/lib/supabase-service';
-import { useAuth } from '@/lib/AuthContext';
 
 const categoryOptions = [
   { value: 'travel', emoji: '✈️', label: 'Du lịch' },
@@ -18,7 +17,6 @@ const categoryOptions = [
 ];
 
 export default function BucketList() {
-  const { user } = useAuth();
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ title: '', description: '', category: 'activity', emoji: '🎯' });
   const queryClient = useQueryClient();
@@ -26,7 +24,6 @@ export default function BucketList() {
   const { data: items = [], isLoading } = useQuery({
     queryKey: ['bucket-items'],
     queryFn: () => bucketListService.list(),
-    enabled: !!user
   });
 
   const createMutation = useMutation({

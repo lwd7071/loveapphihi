@@ -9,7 +9,6 @@ import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { diaryEntryService, uploadPhoto } from '@/lib/supabase-service';
-import { useAuth } from '@/lib/AuthContext';
 
 const moodOptions = [
   { value: 'happy', emoji: '😄', label: 'Vui' },
@@ -31,7 +30,6 @@ const moodColors = {
 };
 
 export default function Diary() {
-  const { user } = useAuth();
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ 
     title: '', 
@@ -46,7 +44,6 @@ export default function Diary() {
   const { data: entries = [] } = useQuery({
     queryKey: ['diary-entries'],
     queryFn: () => diaryEntryService.list(),
-    enabled: !!user
   });
 
   const createMutation = useMutation({

@@ -17,7 +17,6 @@ export default function Settings() {
   const { data: profiles = [] } = useQuery({
     queryKey: ['couple-profile'],
     queryFn: () => coupleProfileService.list(),
-    enabled: !!user
   });
 
   const coupleProfile = profiles[0];

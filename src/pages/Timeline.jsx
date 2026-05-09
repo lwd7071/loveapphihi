@@ -3,7 +3,6 @@ import { format, parseISO } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import { motion } from 'framer-motion';
 import { memoryService } from '@/lib/supabase-service';
-import { useAuth } from '@/lib/AuthContext';
 
 const categoryLabel = {
   first_time: { emoji: '🌟', color: 'bg-yellow-100 text-yellow-600', dot: 'bg-yellow-400' },
@@ -14,12 +13,9 @@ const categoryLabel = {
 };
 
 export default function Timeline() {
-  const { user } = useAuth();
-
   const { data: memories = [] } = useQuery({
     queryKey: ['memories'],
     queryFn: () => memoryService.list(),
-    enabled: !!user
   });
 
   const sorted = [...memories].sort((a, b) =>

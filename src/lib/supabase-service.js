@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { supabase, ensureAuth } from './supabase';
 
 // Helper to handle Supabase errors
 const handleError = (error) => {
@@ -6,9 +6,17 @@ const handleError = (error) => {
   throw error;
 };
 
+// Helper: đảm bảo đã login trước khi thao tác cần user_id
+const getUser = async () => {
+  const user = await ensureAuth();
+  if (!user) throw new Error('Không thể xác thực người dùng');
+  return user;
+};
+
 // Couple Profile Service
 export const coupleProfileService = {
   async list() {
+    await ensureAuth();
     const { data, error } = await supabase
       .from('profiles')
       .select('*')
@@ -19,6 +27,7 @@ export const coupleProfileService = {
   },
 
   async get(id) {
+    await ensureAuth();
     const { data, error } = await supabase
       .from('profiles')
       .select('*')
@@ -30,6 +39,7 @@ export const coupleProfileService = {
   },
 
   async update(id, updates) {
+    await ensureAuth();
     const { data, error } = await supabase
       .from('profiles')
       .update(updates)
@@ -45,6 +55,7 @@ export const coupleProfileService = {
 // Diary Entry Service
 export const diaryEntryService = {
   async list(limit = null) {
+    await ensureAuth();
     let query = supabase
       .from('diary_entries')
       .select('*')
@@ -58,8 +69,7 @@ export const diaryEntryService = {
   },
 
   async create(entry) {
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) throw new Error("Vui lòng đăng nhập lại (Lỗi xác thực: Sai API Key hoặc phiên đăng nhập hết hạn).");
+    const user = await getUser();
     
     const { data, error } = await supabase
       .from('diary_entries')
@@ -72,6 +82,7 @@ export const diaryEntryService = {
   },
 
   async update(id, updates) {
+    await ensureAuth();
     const { data, error } = await supabase
       .from('diary_entries')
       .update(updates)
@@ -84,6 +95,7 @@ export const diaryEntryService = {
   },
 
   async delete(id) {
+    await ensureAuth();
     const { error } = await supabase
       .from('diary_entries')
       .delete()
@@ -96,6 +108,7 @@ export const diaryEntryService = {
 // Love Note Service
 export const loveNoteService = {
   async list(limit = null) {
+    await ensureAuth();
     let query = supabase
       .from('love_notes')
       .select('*')
@@ -109,8 +122,7 @@ export const loveNoteService = {
   },
 
   async create(note) {
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) throw new Error("Vui lòng đăng nhập lại (Lỗi xác thực: Sai API Key hoặc phiên đăng nhập hết hạn).");
+    const user = await getUser();
     
     const { data, error } = await supabase
       .from('love_notes')
@@ -123,6 +135,7 @@ export const loveNoteService = {
   },
 
   async update(id, updates) {
+    await ensureAuth();
     const { data, error } = await supabase
       .from('love_notes')
       .update(updates)
@@ -153,6 +166,7 @@ export const loveNoteService = {
 // Memory Service
 export const memoryService = {
   async list() {
+    await ensureAuth();
     const { data, error } = await supabase
       .from('memories')
       .select('*')
@@ -163,8 +177,7 @@ export const memoryService = {
   },
 
   async create(memory) {
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) throw new Error("Vui lòng đăng nhập lại (Lỗi xác thực: Sai API Key hoặc phiên đăng nhập hết hạn).");
+    const user = await getUser();
     
     const { data, error } = await supabase
       .from('memories')
@@ -177,6 +190,7 @@ export const memoryService = {
   },
 
   async update(id, updates) {
+    await ensureAuth();
     const { data, error } = await supabase
       .from('memories')
       .update(updates)
@@ -189,6 +203,7 @@ export const memoryService = {
   },
 
   async delete(id) {
+    await ensureAuth();
     const { error } = await supabase
       .from('memories')
       .delete()
@@ -201,6 +216,7 @@ export const memoryService = {
 // Bucket List Service
 export const bucketListService = {
   async list() {
+    await ensureAuth();
     const { data, error } = await supabase
       .from('bucket_list')
       .select('*')
@@ -211,8 +227,7 @@ export const bucketListService = {
   },
 
   async create(item) {
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) throw new Error("Vui lòng đăng nhập lại (Lỗi xác thực: Sai API Key hoặc phiên đăng nhập hết hạn).");
+    const user = await getUser();
     
     const { data, error } = await supabase
       .from('bucket_list')
@@ -225,6 +240,7 @@ export const bucketListService = {
   },
 
   async update(id, updates) {
+    await ensureAuth();
     const { data, error } = await supabase
       .from('bucket_list')
       .update(updates)
@@ -237,6 +253,7 @@ export const bucketListService = {
   },
 
   async delete(id) {
+    await ensureAuth();
     const { error } = await supabase
       .from('bucket_list')
       .delete()
@@ -248,7 +265,7 @@ export const bucketListService = {
 
 // Photo Upload Service
 export const uploadPhoto = async (file) => {
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getUser();
   const fileExt = file.name.split('.').pop();
   const fileName = `${user.id}/${Date.now()}.${fileExt}`;
 
