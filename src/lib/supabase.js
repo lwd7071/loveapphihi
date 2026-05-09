@@ -8,3 +8,12 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 }
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Kiểm tra kết nối và in ra log
+supabase.auth.getSession().then(({ error }) => {
+  if (!error) {
+    console.log('✅ Kết nối Supabase thành công!');
+  } else {
+    console.error('❌ Lỗi kết nối Supabase:', error.message);
+  }
+});
