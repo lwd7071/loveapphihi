@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Hardcode trực tiếp - app đơn giản cho 2 người, không cần env vars
-const SUPABASE_URL = 'https://ssckftnqasjstdukdddj.supabase.co';
+// Use proxy URL to bypass adblockers
+const SUPABASE_URL = window.location.origin + '/supabase-api';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzY2tmdG5xYXNqc3RkdWtkZGRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyODc0MDksImV4cCI6MjA5Mzg2MzQwOX0.ShnJykSak8H48t4ozj4mFSuLYbd5DjOVvDCbtbZdIa8';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
