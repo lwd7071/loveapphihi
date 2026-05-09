@@ -1,0 +1,25 @@
+{
+  "name": "CoupleProfile",
+  "type": "object",
+  "properties": {
+    "partner1_name": {
+      "type": "string"
+    },
+    "partner2_name": {
+      "type": "string"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "couple_name": {
+      "type": "string"
+    },
+    "cover_photo": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "start_date"
+  ]
+}

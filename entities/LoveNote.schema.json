@@ -1,0 +1,25 @@
+{
+  "name": "LoveNote",
+  "type": "object",
+  "properties": {
+    "message": {
+      "type": "string"
+    },
+    "from_name": {
+      "type": "string"
+    },
+    "to_name": {
+      "type": "string"
+    },
+    "is_read": {
+      "type": "boolean",
+      "default": false
+    },
+    "sticker": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "message"
+  ]
+}

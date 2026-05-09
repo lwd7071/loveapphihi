@@ -1,0 +1,37 @@
+{
+  "name": "DiaryEntry",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "mood": {
+      "type": "string",
+      "enum": [
+        "happy",
+        "love",
+        "sad",
+        "excited",
+        "grateful",
+        "miss"
+      ]
+    },
+    "photo_url": {
+      "type": "string"
+    },
+    "entry_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "author_name": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "content"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "name": "BucketItem",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "is_done": {
+      "type": "boolean",
+      "default": false
+    },
+    "done_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["travel", "food", "activity", "milestone", "other"]
+    },
+    "emoji": {
+      "type": "string"
+    }
+  },
+  "required": ["title"]
+}
