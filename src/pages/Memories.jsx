@@ -4,6 +4,7 @@ import { Plus, X, Star } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -51,7 +52,9 @@ export default function Memories() {
         category: 'special', 
         photos: [] 
       });
-    }
+      toast.success('Đã lưu kỷ niệm!');
+    },
+    onError: (error) => toast.error('Lỗi khi lưu: ' + error.message)
   });
 
   const toggleFavMutation = useMutation({
@@ -60,7 +63,9 @@ export default function Memories() {
       queryClient.invalidateQueries({ queryKey: ['memories'] });
       // update selected memory in modal if open
       setSelectedMemory(prev => prev ? { ...prev, is_favorite: !prev.is_favorite } : null);
-    }
+      toast.success('Đã cập nhật kỷ niệm!');
+    },
+    onError: (error) => toast.error('Lỗi: ' + error.message)
   });
 
   // Upload multiple photos one at a time

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Send, Heart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -42,12 +43,17 @@ export default function LoveNotes() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['love-notes'] });
       setMessage('');
-    }
+      toast.success('Đã gửi tin nhắn bí mật! 💌');
+    },
+    onError: (error) => toast.error('Lỗi khi gửi: ' + error.message)
   });
 
   const markReadMutation = useMutation({
     mutationFn: ({ id }) => loveNoteService.update(id, { is_read: true }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['love-notes'] })
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['love-notes'] });
+    },
+    onError: (error) => toast.error('Lỗi: ' + error.message)
   });
 
   const handleSend = () => {

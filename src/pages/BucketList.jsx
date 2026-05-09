@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, X, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -37,7 +38,9 @@ export default function BucketList() {
       queryClient.invalidateQueries({ queryKey: ['bucket-items'] });
       setShowForm(false);
       setForm({ title: '', description: '', category: 'activity', emoji: '🎯' });
-    }
+      toast.success('Đã thêm điều muốn làm!');
+    },
+    onError: (error) => toast.error('Lỗi khi thêm: ' + error.message)
   });
 
   const toggleMutation = useMutation({
@@ -45,7 +48,11 @@ export default function BucketList() {
       is_done: !is_done,
       done_date: !is_done ? new Date().toISOString().split('T')[0] : null,
     }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['bucket-items'] })
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bucket-items'] });
+      toast.success('Đã cập nhật!');
+    },
+    onError: (error) => toast.error('Lỗi khi cập nhật: ' + error.message)
   });
 
   const done = items.filter(i => i.is_done);
